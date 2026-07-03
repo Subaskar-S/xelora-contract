@@ -1,0 +1,14 @@
+{
+  "name": "xelora-contract",
+  "version": "1.0.0",
+  "description": "Xelora Coin Smart Contracts",
+  "main": "index.js",
+  "scripts": {
+    "compile": "mkdir -p contracts && cp *.sol contracts/ && cp -r mocks contracts/ && cp -r tokenmarket contracts/ && npx truffle compile; rm -rf contracts",
+    "test": "mkdir -p contracts && cp *.sol contracts/ && cp -r mocks contracts/ && cp -r tokenmarket contracts/ && npx truffle test; rm -rf contracts"
+  },
+  "devDependencies": {
+    "openzeppelin-solidity": "1.10.0",
+    "truffle": "^5.11.5"
+  }
+}
