@@ -4,11 +4,12 @@
  * The contract has been minimally modified to work outside of that ecosystem,
  * and refactored for consistency and style.
  */
-pragma solidity 0.4.23;
+pragma solidity ^0.4.23;
 
 import "../zeppelin/contracts/token/ERC20/StandardToken.sol";
 import "./tokenmarket/UpgradeAgent.sol";
 import "./Recoverable.sol";
+import "./Multiownable.sol";
 
 /**
  * @title UpgradeableToken provides a token upgrade mechanism that, after
@@ -21,7 +22,7 @@ import "./Recoverable.sol";
  * @author Zachary Kilgore @ Xelora Technologies LLC
  * @dev First envisioned by Golem and Lunyr projects
  */
-contract UpgradeableToken is StandardToken, Recoverable {
+contract UpgradeableToken is StandardToken, Recoverable, Multiownable {
 
   /** The contract that will handle the upgrading the tokens. */
   UpgradeAgent public upgradeAgent;
@@ -87,7 +88,7 @@ contract UpgradeableToken is StandardToken, Recoverable {
    * interface.
    * @param _upgradeAgent The address of the new UpgradeAgent smart contract
    */
-  function setUpgradeAgent(UpgradeAgent _upgradeAgent) external onlyOwner {
+  function setUpgradeAgent(UpgradeAgent _upgradeAgent) external onlyManyOwners(keccak256(abi.encodePacked("setUpgradeAgent", _upgradeAgent))) {
     require(canUpgrade(), "Ensure the token is upgradeable in the first place");
     require(_upgradeAgent != address(0), "Ensure upgrade agent address is not blank");
     require(getUpgradeState() != UpgradeState.Upgrading, "Ensure upgrade has not started");
