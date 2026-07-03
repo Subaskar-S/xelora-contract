@@ -1,4 +1,4 @@
-pragma solidity 0.4.23;
+pragma solidity ^0.4.23;
 
 import "./Recoverable.sol";
 import "../zeppelin/contracts/token/ERC20/ERC20Basic.sol";
@@ -149,7 +149,7 @@ contract TokenVault is Recoverable {
    */
   function lock() external onlyOwner vaultLoading {
     require(tokensAllocated == tokensToBeAllocated, "Expected to allocate all tokens");
-    require(token.balanceOf(address(this)) == tokensAllocated, "Vault must own enough tokens to distribute");
+    require(token.balanceOf(address(this)) >= tokensAllocated, "Vault must own enough tokens to distribute");
 
     // solium-disable-next-line security/no-block-members
     lockedAt = block.timestamp;
